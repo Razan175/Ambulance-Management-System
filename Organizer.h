@@ -40,8 +40,8 @@ class Organizer
 public:
 
 	Organizer();
-	bool ReadFile(string filename = "Input.txt");
-	void Simulate(string filename = "Input.txt");
+	bool ReadFile(string filename = "InputFiles/Input.txt");
+	void Simulate(string filename = "InputFiles/Input.txt");
 
 	int getTimeStep();
 

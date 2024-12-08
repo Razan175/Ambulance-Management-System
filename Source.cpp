@@ -2,6 +2,6 @@
 int main()
 {
 	Organizer* org = new Organizer;
-	org->Simulate("Input.txt");
+	org->Simulate();
 	delete org;
 }

@@ -55,7 +55,7 @@ bool Organizer::ReadFile(string filename)
 
 	//Getting number of cars in each hospital and making car objects
 	int scars, ncars;
-	int carID = 0; // as carID and hospital ID are two different things
+	int carID = 0; 
 
 	for (int i = 0; i < hospitalCount; i++)
 	{
