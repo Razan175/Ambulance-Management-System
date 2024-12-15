@@ -116,7 +116,7 @@ bool Organizer::ReadFile(string filename)
 
 
 
-void Organizer::Simulate(string filename)
+void Organizer::randSimulation(string filename)
 {
 	
 	ui->startSimulation();
@@ -128,7 +128,13 @@ void Organizer::Simulate(string filename)
 	int fpatients = 0;
 	while (fpatients != requestCount)
 	{
-		do
+		while (Requests->peek(p) && p->getRequestTime() <= timestep)
+		{
+			Requests->dequeue(p);
+			hospitals[p->getNearestHospital() - 1].AddPatient(p);
+			p = nullptr;
+		}
+		/*do
 		{
 			p = nullptr;
 			Requests->peek(p);
@@ -140,7 +146,7 @@ void Organizer::Simulate(string filename)
 			else
 				break;
 		} while (!Requests->isEmpty());
-
+		*/
 		for (int i = 0; i < hospitalCount; i++)
 		{
 			srand(time(0));
@@ -212,6 +218,27 @@ void Organizer::Simulate(string filename)
 	
 }
 
+void Organizer::mainSimulation(string filename)
+{
+	ui->startSimulation();
+	int rnd;
+	this->ReadFile(filename);
+	ui->selectMode();
+	Patient* p = nullptr;
+	Cars* c;
+	int fpatients = 0;
+	while (fpatients != requestCount)
+	{
+		while (Requests->peek(p) && p->getRequestTime() <= timestep)
+		{
+			Requests->dequeue(p);
+			hospitals[p->getNearestHospital() - 1].AddPatient(p);
+			p = nullptr;
+		}
+
+
+	}
+}
 // Print Functions
 
 void Organizer::printHospitalLists()

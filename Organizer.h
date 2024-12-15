@@ -41,7 +41,8 @@ public:
 
 	Organizer();
 	bool ReadFile(string filename = "InputFiles/Input.txt");
-	void Simulate(string filename = "InputFiles/Input.txt");
+	void randSimulation(string filename = "InputFiles/Input.txt");
+	void mainSimulation(string filename = "InputFiles/Input.txt");
 
 	int getTimeStep();
 

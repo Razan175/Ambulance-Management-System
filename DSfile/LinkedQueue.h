@@ -234,8 +234,7 @@ LinkedQueue<T>::~LinkedQueue()
 {
 	// Free all nodes in the queue
 	T temp;
-	while (dequeue(temp))
-		;
+	while (dequeue(temp));
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 /*
