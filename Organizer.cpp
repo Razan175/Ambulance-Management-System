@@ -111,6 +111,8 @@ bool Organizer::ReadFile(string filename)
 		Cancellations->enqueue(p);
 	}
 
+	file >> carFailure;
+
 	return true;
 }
 
@@ -208,6 +210,27 @@ void Organizer::Simulate(string filename)
 		timestep++;
 		
 	}
+	
+	// cancellations 
+	Patient* cp;
+	Cars* cancelledc;
+	while (!Cancellations->isEmpty()) {
+		cp = nullptr;
+		cancelledc = nullptr;
+		int prior;
+		Cancellations->peek(cp);
+		if (cp && cp->getRequestTime() <= timestep)
+		{
+			Cancellations->dequeue(cp);
+			hospitals[cp->getNearestHospital() - 1].RemovePatient(cp, CANCELLATION);
+			delete cp; //removing patient from the system 
+			// TODO add car assigned to patient from out to back cars list 
+		}
+		else
+			break;
+	}
+
+	
 	ui->endSimulation();
 	
 }
@@ -399,6 +422,60 @@ void Organizer::printFinishedPatientsList()
 int Organizer::getTimeStep()
 {
 	return timestep;
+}
+
+void Organizer::CarFailure() {
+	int rndd;
+	int rndc;
+	priQueue <Cars*>* TempCars = new priQueue <Cars*>;
+	Cars* tempcar = new Cars;
+	int pri;
+	int Fpri;
+	Cars* failedcar = new Cars;
+	Patient* failedpatient;
+
+	{
+		srand(time(0));
+		rndd = rand() % 101; //generates random number between 0 and 100
+		if (rndd == carFailure)
+		{
+			rndc = (rand() % (outCars->getSize())) + 1; // generates random number between 1 and outcars number
+
+			for (int j = 1; j <= rndc - 1; j++) { //enques all elements before desired car
+				outCars->peek(tempcar, pri);
+				outCars->dequeue(tempcar, pri); //deques first item
+				TempCars->enqueue(tempcar, pri); // enques it in temp prique
+			}
+
+			outCars->peek(failedcar, Fpri);
+			outCars->dequeue(failedcar, Fpri); //picked car is pointed at by failedcar ptr
+
+			while (!TempCars->isEmpty()) { // returns cars back to outcars
+				TempCars->peek(tempcar, pri);
+				TempCars->dequeue(tempcar, pri);
+				outCars->enqueue(tempcar, pri);
+			}
+
+			failedcar->setCarStatus(FAILED);
+			backCars->enqueue(failedcar, Fpri); // car added to back list 
+
+			//Question2: after backcars arrive to hispital are they added to free cars list???
+
+			CheckUpList->enqueue(failedcar); // car added to checkup list 
+
+			//Question3: datastructure necessary for checkup list??
+
+			failedpatient = failedcar->getPatientAssigned(); //gets the patient that was assigned to the failedcar
+
+			//put patient on top of list to be assigned next
+			hospitals[failedpatient->getNearestHospital() - 1].movetotop(failedpatient);
+		}
+	}
+
+	//Delete dynamic allocations 
+	delete TempCars;
+	delete tempcar;
+	delete failedcar;
 }
 
 Organizer::~Organizer()
