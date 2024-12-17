@@ -67,10 +67,6 @@ bool Hospital::RemovePatient(Patient*& p, Type t)
 {
 	int pri;// = p->getSeverity();
 
-
-
-
-
 	if (t == EMERGENCY)
 	{
 		EPList.dequeue(p,pri);
