@@ -17,14 +17,24 @@ bool Hospital::AddCar(Cars* &car)
 
 bool Hospital::RemoveSCar(Cars*& car)
 {
-		return SCars.dequeue(car);
-		
+	Cars* p;
+	if (SCars.peek(p))
+	{
+		if (p->getCarStatus() == ASSIGNED)
+			return SCars.dequeue(car);
+	}
+	return false;
 }
 
 bool Hospital::RemoveNCar(Cars*& car)
 {
-	return NCars.dequeue(car);
-
+	Cars* p;
+	if (NCars.peek(p))
+	{
+		if (p->getCarStatus() == ASSIGNED)
+			return NCars.dequeue(car);
+	}
+	return false;
 }
 
 void Hospital::AddPatient(Patient*& p)
@@ -40,8 +50,53 @@ void Hospital::AddPatient(Patient*& p)
 	}
 }
 
-void Hospital::AssignPatient(Patient*& p)
+Type Hospital::GetAvailableCar(Type patientType)
 {
+	return Type();
+}
+
+//Modify this function
+bool Hospital::AssignPatient(Patient* p, Cars*& c)
+{
+	if (p->getPatientType() == EMERGENCY) {
+		if (!NCars.isEmpty())
+		{
+			NCars.dequeue(c);
+			c->pickupPatient(p);
+			c->setCarStatus(ASSIGNED);
+			return true;
+		}
+		else if (!SCars.isEmpty())
+		{
+			SCars.dequeue(c);
+			c->pickupPatient(p);
+			c->setCarStatus(ASSIGNED);
+			return true;
+		}
+	}
+	else if (p->getPatientType() == SPECIAL) 
+	{
+		if (!SCars.isEmpty())
+		{
+			SCars.dequeue(c);
+			c->pickupPatient(p);
+			c->setCarStatus(ASSIGNED);
+			return true;
+		}
+	}
+	else if (p->getPatientType() == NORMAL)
+	{
+		if (!NCars.isEmpty())
+		{
+			NCars.dequeue(c);
+			c->pickupPatient(p);
+			c->setCarStatus(ASSIGNED);
+			return true;
+		}
+	}
+	return false;
+
+	/*
 	Cars* amp;
 	if (p->getPatientType() == EMERGENCY) {
 		if (!NCars.isEmpty()) {
@@ -60,12 +115,14 @@ void Hospital::AssignPatient(Patient*& p)
 	else if (p->getPatientType() == NORMAL) {
 		NCars.dequeue(amp);
 		amp->setCarStatus(ASSIGNED);
-	};
+	}
+	return false;
+	*/
 }
 
 bool Hospital::RemovePatient(Patient*& p, Type t)
 {
-	int pri;// = p->getSeverity();
+	int pri;
 
 	if (t == EMERGENCY)
 	{
@@ -100,6 +157,37 @@ bool Hospital::RemovePatient(Patient*& p, Type t)
 
 	return true;
 }
+
+//////////////////////////
+/// SEND CAR FUNCTIONS///
+////////////////////////
+
+bool Hospital::sendEPCar(Cars* &c)
+{
+	Patient* p;
+	int pri;
+	if (!EPList.dequeue(p, pri))  //if list is empty ,return false
+		return false;
+	return AssignPatient(p, c);		//if there are no available cars, return false
+}
+
+bool Hospital::sendSPCar(Cars*& c)
+{
+	Patient* p;
+	if (!SPList.dequeue(p))  //if list is empty ,return false
+		return false;
+	return AssignPatient(p, c);		//if there are no available cars, return false
+}
+
+bool Hospital::sendNPCar(Cars*& c)
+{
+	Patient* p;
+	if (!NPList.dequeue(p))  //if list is empty ,return false
+		return false;
+	return AssignPatient(p, c);		//if there are no available cars, return false
+}
+
+
 
 // not sure from this
 int Hospital::getEmergencyRequestsCount()

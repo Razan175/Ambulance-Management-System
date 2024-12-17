@@ -2,6 +2,6 @@
 int main()
 {
 	Organizer* org = new Organizer;
-	org->randSimulation();
+	org->mainSimulation();
 	delete org;
 }
