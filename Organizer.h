@@ -45,8 +45,8 @@ public:
 	void mainSimulation(string filename = "InputFiles/Input.txt");
 
 	int getTimeStep();
-
 	void CarFailure();
+  
 	// Print functions
 	void printHospitalLists();
 	void printOutCarsList();

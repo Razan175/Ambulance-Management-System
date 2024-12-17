@@ -96,6 +96,20 @@ Patient* Cars::getPatientAssigned()
 //
 //}
 
+bool Cars::pickupPatient(Patient*& p)
+{
+	if (patientAssigned)
+		return false;
+	patientAssigned = p;
+	return true;
+}
+
+void Cars::dropOffPatient(Patient* &p)
+{
+	p = patientAssigned;
+	patientAssigned = nullptr;
+}
+
 Cars::~Cars()
 {
 	// is it important ?? ***	

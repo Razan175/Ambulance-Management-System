@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|solutionrelative:Organizer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|solutionrelative:Organizer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -11,16 +15,8 @@
       "RelativeMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|solutionrelative:Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|solutionrelative:Organizer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|C:\\Data_Structure\\Project\\Ambulance-Management-System\\UI.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|solutionrelative:UI.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|C:\\Data_Structure\\Project\\Ambulance-Management-System\\Hospital.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{662D4732-53F2-4DD1-A679-55029D1A6424}|phase1.2.vcxproj|solutionrelative:Hospital.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+<<<<<<< Updated upstream
+          "SelectedChildIndex": 4,
+=======
+          "SelectedChildIndex": 6,
+>>>>>>> Stashed changes
           "Children": [
             {
               "$type": "Bookmark",
@@ -49,64 +49,77 @@
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Hospital.cpp",
-              "DocumentMoniker": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Hospital.cpp",
-              "RelativeDocumentMoniker": "Hospital.cpp",
-              "ToolTip": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Hospital.cpp",
-              "RelativeToolTip": "Hospital.cpp",
-              "ViewState": "AgIAAF0AAAAAAAAAAAAAAHEAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-07T23:22:56.101Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Organizer.h",
-              "DocumentMoniker": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.h",
-              "RelativeDocumentMoniker": "Organizer.h",
-              "ToolTip": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.h",
-              "RelativeToolTip": "Organizer.h",
-              "ViewState": "AgIAACMAAAAAAAAAAAAAACwAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-07T22:47:51.52Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Source.cpp",
-              "DocumentMoniker": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Source.cpp",
-              "RelativeDocumentMoniker": "Source.cpp",
-              "ToolTip": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Source.cpp",
-              "RelativeToolTip": "Source.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-07T22:47:44.628Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
+<<<<<<< Updated upstream
               "DocumentIndex": 0,
+=======
+              "DocumentIndex": 1,
+>>>>>>> Stashed changes
               "Title": "Organizer.cpp",
               "DocumentMoniker": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.cpp",
               "RelativeDocumentMoniker": "Organizer.cpp",
               "ToolTip": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.cpp",
               "RelativeToolTip": "Organizer.cpp",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA==",
+<<<<<<< Updated upstream
+              "ViewState": "AgIAAJYBAAAAAAAAAAAAAO4AAAAAAAAAAAAAAA==",
+=======
+              "ViewState": "AgIAAOMAAAAAAAAAAAAAABABAAAoAAAAAAAAAA==",
+>>>>>>> Stashed changes
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-07T17:51:19.852Z",
               "EditorCaption": ""
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+<<<<<<< Updated upstream
+              "DocumentIndex": 1,
+              "Title": "Hospital.cpp",
+              "DocumentMoniker": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Hospital.cpp",
+              "RelativeDocumentMoniker": "Hospital.cpp",
+              "ToolTip": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Hospital.cpp",
+              "RelativeToolTip": "Hospital.cpp",
+              "ViewState": "AgIAACgAAAAAAAAAAAAAAC8AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-07T23:22:56.101Z"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 3,
+=======
+              "DocumentIndex": 0,
+>>>>>>> Stashed changes
+              "Title": "Organizer.h",
+              "DocumentMoniker": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.h",
+              "RelativeDocumentMoniker": "Organizer.h",
+              "ToolTip": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Organizer.h",
+              "RelativeToolTip": "Organizer.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-07T22:47:51.52Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Source.cpp",
+              "DocumentMoniker": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Source.cpp",
+              "RelativeDocumentMoniker": "Source.cpp",
+              "ToolTip": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\Source.cpp",
+              "RelativeToolTip": "Source.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-07T22:47:44.628Z"
+            },
+            {
+              "$type": "Document",
+<<<<<<< Updated upstream
+              "DocumentIndex": 4,
+=======
+              "DocumentIndex": 3,
+>>>>>>> Stashed changes
               "Title": "UI.cpp",
               "DocumentMoniker": "C:\\Data_Structure\\Project\\Ambulance-Management-System\\UI.cpp",
               "RelativeDocumentMoniker": "UI.cpp",
@@ -114,8 +127,7 @@
               "RelativeToolTip": "UI.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-07T17:51:13.655Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-07T17:51:13.655Z"
             }
           ]
         }

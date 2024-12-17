@@ -42,9 +42,8 @@ public:
 
 	// Other Functions
 
-	//bool pickupPatient(Patient* p);
-	//bool dropOffPatient(Patient* p); // should i use Patient*& p ?? ***
-	//								//bayen, msh m7tagenha fel phase de aslan
+	bool pickupPatient(Patient* &p);
+	void dropOffPatient(Patient* &p); 
 
 	// destructor
 	~Cars();

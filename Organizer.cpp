@@ -244,14 +244,15 @@ void Organizer::randSimulation(string filename)
 void Organizer::mainSimulation(string filename)
 {
 	ui->startSimulation();
-	int rnd;
 	this->ReadFile(filename);
 	ui->selectMode();
 	Patient* p = nullptr;
 	Cars* c;
+	int pri;
 	int fpatients = 0;
 	while (fpatients != requestCount)
 	{
+		//sending all patients to their hospital at the given timestep
 		while (Requests->peek(p) && p->getRequestTime() <= timestep)
 		{
 			Requests->dequeue(p);
@@ -259,7 +260,49 @@ void Organizer::mainSimulation(string filename)
 			p = nullptr;
 		}
 
+		//moving cars from free to out
+		for (int i = 0; i < hospitalCount; i++)
+		{
+			while (hospitals[i].sendEPCar(c)) 
+			{
+				p = c->getPatientAssigned();
+				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
+				outCars->enqueue(c, p->getPickupTime());
+			}
+			while (hospitals[i].sendSPCar(c))
+			{
+				p = c->getPatientAssigned();
+				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
+				outCars->enqueue(c, p->getPickupTime());
+			}
+			while (hospitals[i].sendNPCar(c))
+			{
+				p = c->getPatientAssigned();
+				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
+				outCars->enqueue(c, p->getPickupTime());
+			}
+		}
 
+		//move from out to back
+		while (outCars->peek(c, pri) && pri == timestep)
+		{
+			outCars->dequeue(c, pri);
+			p = c->getPatientAssigned();
+			pri += p->getDistance() / c->getSpeed();
+			backCars->enqueue(c, pri);
+		}
+
+		//move from back to free
+		while (backCars->peek(c, pri) && pri == timestep)
+		{
+			backCars->dequeue(c, pri);
+			c->dropOffPatient(p);
+			finishedPatients->enqueue(p);
+			fpatients++;
+			hospitals[c->getHID() - 1].AddCar(c);
+		}
+		ui->simulateMode();
+		timestep++;
 	}
 }
 // Print Functions
