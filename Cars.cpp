@@ -104,10 +104,14 @@ bool Cars::pickupPatient(Patient*& p)
 	return true;
 }
 
-void Cars::dropOffPatient(Patient* &p)
+bool Cars::dropOffPatient(Patient* &p)
 {
+	if (!patientAssigned)
+		return false;
 	p = patientAssigned;
 	patientAssigned = nullptr;
+
+	return true;
 }
 
 Cars::~Cars()

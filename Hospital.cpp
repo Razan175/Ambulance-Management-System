@@ -55,47 +55,9 @@ Type Hospital::GetAvailableCar(Type patientType)
 	return Type();
 }
 
-//Modify this function
+//Finds the suitable car for patient p , assigns p to it and returns the car in variable c
 bool Hospital::AssignPatient(Patient* p, Cars*& c)
 {
-	if (p->getPatientType() == EMERGENCY) {
-		if (!NCars.isEmpty())
-		{
-			NCars.dequeue(c);
-			c->pickupPatient(p);
-			c->setCarStatus(ASSIGNED);
-			return true;
-		}
-		else if (!SCars.isEmpty())
-		{
-			SCars.dequeue(c);
-			c->pickupPatient(p);
-			c->setCarStatus(ASSIGNED);
-			return true;
-		}
-	}
-	else if (p->getPatientType() == SPECIAL) 
-	{
-		if (!SCars.isEmpty())
-		{
-			SCars.dequeue(c);
-			c->pickupPatient(p);
-			c->setCarStatus(ASSIGNED);
-			return true;
-		}
-	}
-	else if (p->getPatientType() == NORMAL)
-	{
-		if (!NCars.isEmpty())
-		{
-			NCars.dequeue(c);
-			c->pickupPatient(p);
-			c->setCarStatus(ASSIGNED);
-			return true;
-		}
-	}
-	return false;
-
 	/*
 	Cars* amp;
 	if (p->getPatientType() == EMERGENCY) {
@@ -116,8 +78,9 @@ bool Hospital::AssignPatient(Patient* p, Cars*& c)
 		NCars.dequeue(amp);
 		amp->setCarStatus(ASSIGNED);
 	}
-	return false;
+
 	*/
+	return false;
 }
 
 bool Hospital::RemovePatient(Patient*& p, Type t)
@@ -169,6 +132,7 @@ bool Hospital::sendEPCar(Cars* &c)
 	if (!EPList.dequeue(p, pri))  //if list is empty ,return false
 		return false;
 	return AssignPatient(p, c);		//if there are no available cars, return false
+									//if true, assigns patient p to car and puts it in c
 }
 
 bool Hospital::sendSPCar(Cars*& c)
@@ -177,6 +141,7 @@ bool Hospital::sendSPCar(Cars*& c)
 	if (!SPList.dequeue(p))  //if list is empty ,return false
 		return false;
 	return AssignPatient(p, c);		//if there are no available cars, return false
+									//if true, puts the car with the assigned patient in C
 }
 
 bool Hospital::sendNPCar(Cars*& c)
@@ -185,6 +150,7 @@ bool Hospital::sendNPCar(Cars*& c)
 	if (!NPList.dequeue(p))  //if list is empty ,return false
 		return false;
 	return AssignPatient(p, c);		//if there are no available cars, return false
+									//if true, puts the car with the assigned patient in C
 }
 
 

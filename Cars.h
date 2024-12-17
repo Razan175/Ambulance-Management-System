@@ -43,7 +43,7 @@ public:
 	// Other Functions
 
 	bool pickupPatient(Patient* &p);
-	void dropOffPatient(Patient* &p); 
+	bool dropOffPatient(Patient* &p); 
 
 	// destructor
 	~Cars();

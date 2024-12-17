@@ -8,6 +8,10 @@ Organizer::Organizer()
 	requestCount = 0;
 	scarCount = 0;
 	ncarCount = 0;
+	cancellations = 0;
+	SPCount = 0;
+	NPCount = 0;
+	EPCount = 0;
 
 	Requests = new LinkedQueue <Patient*>;
 	Cancellations = new LinkedQueue <Patient*>;
@@ -86,12 +90,19 @@ bool Organizer::ReadFile(string filename)
 		file >> ptype >> rt >> pid >> hid >> d;
 
 		if (ptype == "NP")
+		{
 			t = NORMAL;
+			NPCount++;
+		}
 		else if (ptype == "SP")
+		{
 			t = SPECIAL;
+			SPCount++;
+		}
 		else if (ptype == "EP")
 		{
 			t = EMERGENCY;
+			EPCount++;
 			file >> severity;
 		}
 		else
@@ -112,12 +123,125 @@ bool Organizer::ReadFile(string filename)
 	}
 
 	file >> carFailure;
-
+	file.close();
 	return true;
 }
 
+void Organizer::mainSimulation(string filename)
+{
+	if (!ReadFile(filename))
+		return;
+
+	ui->startSimulation();
+	ui->selectMode();
+
+	Patient* p = nullptr;
+	Cars* c;
+	int pri;
+	int fpatients = 0;
+
+	while (fpatients != requestCount)
+	{
+		//sending all patients to their hospital at the given timestep
+		while (Requests->peek(p) && p->getRequestTime() <= timestep)
+		{
+			Requests->dequeue(p);
+			hospitals[p->getNearestHospital() - 1].AddPatient(p);
+			p = nullptr;
+		}
+
+		ui->simulateMode();
+
+		//moving cars from free to out
+		for (int i = 0; i < hospitalCount; i++)
+		{
+
+			//handling emergency patients first
+			while (hospitals[i].sendEPCar(c))
+			{
+				p = c->getPatientAssigned();
+				p->setPickupTime((timestep + (p->getDistance() / c->getSpeed())));
+				c->setCarStatus(ASSIGNED);
+
+				//we want the highest priority to the smallest pickup time
+				//the given pri-queues give the highest priority to the biggest integer number
+				//so to solve this, we pass the pickup time with a negative sign
+
+				outCars->enqueue(c, -1 * p->getPickupTime());
+			}
 
 
+			//handling special patients next
+			while (hospitals[i].sendSPCar(c))
+			{
+				p = c->getPatientAssigned();
+				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
+				c->setCarStatus(ASSIGNED);
+				outCars->enqueue(c, -1 * p->getPickupTime());
+			}
+
+			//handling normal patients
+			while (hospitals[i].sendNPCar(c))
+			{
+				p = c->getPatientAssigned();
+				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
+				c->setCarStatus(ASSIGNED);
+				outCars->enqueue(c, -1 * p->getPickupTime());
+			}
+		}
+
+		//move from out to back
+		while (outCars->peek(c, pri) && (pri * -1) <= timestep)
+		{
+			outCars->dequeue(c, pri);
+			p = c->getPatientAssigned();
+
+			pri += (-1 * (p->getDistance() / c->getSpeed()));
+			c->setCarStatus(LOADED);
+
+			backCars->enqueue(c, pri);
+		}
+
+		//move from back to free
+		while (backCars->peek(c, pri) && (pri * -1) <= timestep)
+		{
+			backCars->dequeue(c, pri);
+			// if car is not cancelled or failed
+			if (c->dropOffPatient(p) || c->getCarType() != FAILED || p->getPatientType() == CANCELLATION)
+			{
+				c->setCarStatus(READY);
+				finishedPatients->enqueue(p);
+				fpatients++;
+				hospitals[c->getHID() - 1].AddCar(c);
+			}
+		}
+
+		// cancellations 
+		/*
+		Patient* cp;
+		Cars* cancelledc;
+		while (!Cancellations->isEmpty()) {
+			cp = nullptr;
+			cancelledc = nullptr;
+			int prior;
+			Cancellations->peek(cp);
+			if (cp && cp->getRequestTime() <= timestep)
+			{
+				Cancellations->dequeue(cp);
+				hospitals[cp->getNearestHospital() - 1].RemovePatient(cp, CANCELLATION);
+				delete cp; //removing patient from the system
+				// TODO add car assigned to patient from out to back cars list
+			}
+			else
+				break;
+		}
+		*/
+		timestep++;
+	}
+}
+
+
+/////////////PHASE 1.2 SIMULATION, DON'T ADD TO IT, ADD TO mainSimulation()////////
 void Organizer::randSimulation(string filename)
 {
 	
@@ -210,103 +334,13 @@ void Organizer::randSimulation(string filename)
 					hospitals[c->getHID() - 1].AddCar(c);
 			}
 		}
-
 		ui->simulateMode();
-
 		timestep++;
-		
 	}
-	
-	// cancellations 
-	Patient* cp;
-	Cars* cancelledc;
-	while (!Cancellations->isEmpty()) {
-		cp = nullptr;
-		cancelledc = nullptr;
-		int prior;
-		Cancellations->peek(cp);
-		if (cp && cp->getRequestTime() <= timestep)
-		{
-			Cancellations->dequeue(cp);
-			hospitals[cp->getNearestHospital() - 1].RemovePatient(cp, CANCELLATION);
-			delete cp; //removing patient from the system 
-			// TODO add car assigned to patient from out to back cars list 
-		}
-		else
-			break;
-	}
-
-	
 	ui->endSimulation();
-	
 }
 
-void Organizer::mainSimulation(string filename)
-{
-	ui->startSimulation();
-	this->ReadFile(filename);
-	ui->selectMode();
-	Patient* p = nullptr;
-	Cars* c;
-	int pri;
-	int fpatients = 0;
-	while (fpatients != requestCount)
-	{
-		//sending all patients to their hospital at the given timestep
-		while (Requests->peek(p) && p->getRequestTime() <= timestep)
-		{
-			Requests->dequeue(p);
-			hospitals[p->getNearestHospital() - 1].AddPatient(p);
-			p = nullptr;
-		}
-
-		//moving cars from free to out
-		for (int i = 0; i < hospitalCount; i++)
-		{
-			while (hospitals[i].sendEPCar(c)) 
-			{
-				p = c->getPatientAssigned();
-				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
-				outCars->enqueue(c, p->getPickupTime());
-			}
-			while (hospitals[i].sendSPCar(c))
-			{
-				p = c->getPatientAssigned();
-				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
-				outCars->enqueue(c, p->getPickupTime());
-			}
-			while (hospitals[i].sendNPCar(c))
-			{
-				p = c->getPatientAssigned();
-				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
-				outCars->enqueue(c, p->getPickupTime());
-			}
-		}
-
-		//move from out to back
-		while (outCars->peek(c, pri) && pri == timestep)
-		{
-			outCars->dequeue(c, pri);
-			p = c->getPatientAssigned();
-			pri += p->getDistance() / c->getSpeed();
-			backCars->enqueue(c, pri);
-		}
-
-		//move from back to free
-		while (backCars->peek(c, pri) && pri == timestep)
-		{
-			backCars->dequeue(c, pri);
-			c->dropOffPatient(p);
-			finishedPatients->enqueue(p);
-			fpatients++;
-			hospitals[c->getHID() - 1].AddCar(c);
-		}
-		ui->simulateMode();
-		timestep++;
-	}
-}
 // Print Functions
-
 void Organizer::printHospitalLists()
 {
 
@@ -498,10 +532,10 @@ void Organizer::CarFailure() {
 	int rndd;
 	int rndc;
 	priQueue <Cars*>* TempCars = new priQueue <Cars*>;
-	Cars* tempcar = new Cars;
+	Cars* tempcar;// = new Cars;
 	int pri;
 	int Fpri;
-	Cars* failedcar = new Cars;
+	Cars* failedcar;// = new Cars;
 	Patient* failedpatient;
 
 	{
@@ -531,21 +565,21 @@ void Organizer::CarFailure() {
 
 			//Question2: after backcars arrive to hispital are they added to free cars list???
 
-			CheckUpList->enqueue(failedcar); // car added to checkup list 
+			//CheckUpList->enqueue(failedcar); // car added to checkup list 
 
 			//Question3: datastructure necessary for checkup list??
 
 			failedpatient = failedcar->getPatientAssigned(); //gets the patient that was assigned to the failedcar
 
 			//put patient on top of list to be assigned next
-			hospitals[failedpatient->getNearestHospital() - 1].movetotop(failedpatient);
+			//hospitals[failedpatient->getNearestHospital() - 1].movetotop(failedpatient);
 		}
 	}
 
 	//Delete dynamic allocations 
-	delete TempCars;
-	delete tempcar;
-	delete failedcar;
+	//delete TempCars;
+	//delete tempcar;
+	//delete failedcar;
 }
 
 Organizer::~Organizer()

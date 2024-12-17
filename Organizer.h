@@ -15,7 +15,7 @@
 #include <time.h>
 using namespace std;
 
-class UI; // don't know if important or not
+class UI;
 
 class Organizer
 {
@@ -31,10 +31,16 @@ class Organizer
 
 	int hospitalCount;
 	int requestCount;
+	int cancellations;
+	int NPCount;
+	int SPCount;
+	int EPCount;
 	int scarCount; //total number of scars across hospitals
 	int ncarCount; //total number of ncars across hospitals
 	int carFailure;//cars failure probability 
+
 	UI* ui;
+	ofstream outputfile;
 
 
 public:
@@ -53,6 +59,7 @@ public:
 	void printBackCarsList();
 	void printFinishedPatientsList();
 
+	
 
 	~Organizer();
 };
