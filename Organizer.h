@@ -33,7 +33,7 @@ class Organizer
 	int requestCount;
 	int scarCount; //total number of scars across hospitals
 	int ncarCount; //total number of ncars across hospitals
-
+	int carFailure;//cars failure probability 
 	UI* ui;
 
 
@@ -45,7 +45,8 @@ public:
 	void mainSimulation(string filename = "InputFiles/Input.txt");
 
 	int getTimeStep();
-	
+	void CarFailure();
+  
 	// Print functions
 	void printHospitalLists();
 	void printOutCarsList();

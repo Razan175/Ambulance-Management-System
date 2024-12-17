@@ -136,6 +136,19 @@ bool Hospital::RemovePatient(Patient*& p, Type t)
 	{
 		NPList.dequeue(p);
 	}
+	else if (t == CANCELLATION)
+	{
+		//Question1: is this the correct way to get the car or should i loop on all Ncars list "another linkedque"
+		Cars* nc = nullptr;
+		while (!NCars.isEmpty()) {
+			NCars.peek(nc);
+			if (nc->getPatientAssigned() == p && !nc->getCarStatus() == LOADED) {
+				//patient is not picked up by the assigned car yet
+				NPList.dequeue(p);
+				//nc->setCarStatus(READY);
+			}
+		}
+	}
 	else
 	{
 		p = nullptr;

@@ -11,7 +11,8 @@ enum CarStatus
 {
 	READY,
 	ASSIGNED,
-	LOADED
+	LOADED,
+	FAILED
 };
 
 enum UIModes
