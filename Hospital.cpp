@@ -103,7 +103,7 @@ bool Hospital::RemovePatient(Patient*& p, Type t)
 	{
 		//Question1: is this the correct way to get the car or should i loop on all Ncars list "another linkedque"
 		Cars* nc = nullptr;
-		while (!NCars.isEmpty()) {
+		while (NCars.isEmpty()) {
 			NCars.peek(nc);
 			if (nc->getPatientAssigned() == p && !nc->getCarStatus() == LOADED) {
 				//patient is not picked up by the assigned car yet
@@ -125,31 +125,43 @@ bool Hospital::RemovePatient(Patient*& p, Type t)
 /// SEND CAR FUNCTIONS///
 ////////////////////////
 
-bool Hospital::sendEPCar(Cars* &c)
+bool Hospital::sendEPCar(Cars* &c,Patient *&p)
 {
-	Patient* p;
 	int pri;
-	if (!EPList.dequeue(p, pri))  //if list is empty ,return false
+	if (EPList.isEmpty())  //if list is empty ,return false
 		return false;
-	return AssignPatient(p, c);		//if there are no available cars, return false
+	EPList.dequeue(p, pri);
+	return AssignPatient(p, c);		//if there are no available cars, return false and send the patient to the organizer
+									//to find them a new hospital
 									//if true, assigns patient p to car and puts it in c
 }
 
 bool Hospital::sendSPCar(Cars*& c)
 {
 	Patient* p;
-	if (!SPList.dequeue(p))  //if list is empty ,return false
+	if (SPList.isEmpty())  //if list is empty ,return false
 		return false;
-	return AssignPatient(p, c);		//if there are no available cars, return false
-									//if true, puts the car with the assigned patient in C
+	SPList.peek(p);
+	if (AssignPatient(p, c))
+	{
+		SPList.dequeue(p);
+		return true;		//if there are no available cars, return false
+	}
+							//if true, puts the car with the assigned patient in C
+
 }
 
 bool Hospital::sendNPCar(Cars*& c)
 {
 	Patient* p;
-	if (!NPList.dequeue(p))  //if list is empty ,return false
+	if (NPList.isEmpty())  //if list is empty ,return false
 		return false;
-	return AssignPatient(p, c);		//if there are no available cars, return false
+	NPList.peek(p);
+	if (AssignPatient(p, c))
+	{
+		NPList.dequeue(p);
+		return true;
+	}								//if there are no available cars, return false
 									//if true, puts the car with the assigned patient in C
 }
 

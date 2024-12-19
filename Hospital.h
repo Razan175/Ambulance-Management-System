@@ -23,7 +23,7 @@ public:
 	void AddPatient(Patient*& p);
 	bool RemovePatient(Patient*& p, Type t); 
 
-	bool sendEPCar(Cars* &c);
+	bool sendEPCar(Cars* &c, Patient *& p);
 	bool sendSPCar(Cars*& c);
 	bool sendNPCar(Cars*& c);
 	/*
