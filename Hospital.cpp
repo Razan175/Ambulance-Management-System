@@ -101,14 +101,13 @@ bool Hospital::RemovePatient(Patient*& p, Type t)
 	}
 	else if (t == CANCELLATION)
 	{
-		//Question1: is this the correct way to get the car or should i loop on all Ncars list "another linkedque"
+		//loop on all Ncars list "another linkedque"
 		Cars* nc = nullptr;
 		while (!NCars.isEmpty()) {
 			NCars.peek(nc);
 			if (nc->getPatientAssigned() == p && !nc->getCarStatus() == LOADED) {
 				//patient is not picked up by the assigned car yet
 				NPList.dequeue(p);
-				//nc->setCarStatus(READY);
 			}
 		}
 	}
@@ -119,6 +118,52 @@ bool Hospital::RemovePatient(Patient*& p, Type t)
 	}
 
 	return true;
+}
+
+bool Hospital::movetotop(Patient* p) {
+	int pri;
+	Patient* temp = nullptr;
+	Patient* target = nullptr;
+	LinkedQueue <Patient*>* Tempp = new LinkedQueue <Patient*>;
+
+	if (p->getPatientType() == EMERGENCY) { //emergency patient list 
+		EPList.peek(temp, pri);
+		EPList.enqueue(p, pri + 1); // patient enqued with the highest pri to get moved to front 
+	}
+	else if (p->getPatientType() == NORMAL) {
+		while (NPList.peek(temp)) { //searching for target patient
+			if (temp == p) { //patient found
+				NPList.dequeue(target);
+			}
+			else { 
+				NPList.dequeue(temp);
+				Tempp->enqueue(temp);
+			}
+		}
+		NPList.enqueue(target); 
+		while (Tempp->peek(temp))
+		{ // returnung patients to queue
+			Tempp->dequeue(temp);
+			NPList.enqueue(temp);
+		}
+	}
+	else if (p->getPatientType() == SPECIAL) {
+		while (SPList.peek(temp)) { //searching for target patient
+			if (temp == p) { //patient found
+				SPList.dequeue(target);
+			}
+			else {
+				SPList.dequeue(temp);
+				Tempp->enqueue(temp);
+			}
+		}
+		SPList.enqueue(target); //enqued first to be assigned first
+		while (Tempp->peek(temp))
+		{ // returnung patients to queue
+			Tempp->dequeue(temp);
+			SPList.enqueue(temp);
+		}
+	}
 }
 
 //////////////////////////

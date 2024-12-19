@@ -12,7 +12,9 @@ Organizer::Organizer()
 	SPCount = 0;
 	NPCount = 0;
 	EPCount = 0;
-
+	carFailure = 0;
+	CheckUpTime = 0;
+	CheckUpList = new LinkedQueue<Cars*>;
 	Requests = new LinkedQueue <Patient*>;
 	Cancellations = new LinkedQueue <Patient*>;
 	outCars = new priQueue <Cars*>;
@@ -190,6 +192,8 @@ void Organizer::mainSimulation(string filename)
 			}
 		}
 
+		CarFailure(); //called after cars are out 
+
 		//move from out to back
 		while (outCars->peek(c, pri) && (pri * -1) <= timestep)
 		{
@@ -207,17 +211,26 @@ void Organizer::mainSimulation(string filename)
 		{
 			backCars->dequeue(c, pri);
 			// if car is not cancelled or failed
-			if (c->dropOffPatient(p) || c->getCarType() != FAILED || p->getPatientType() == CANCELLATION)
+			if (c->dropOffPatient(p) || c->getCarStatus() != FAILED || p->getPatientType() == CANCELLATION)
 			{
 				c->setCarStatus(READY);
 				finishedPatients->enqueue(p);
 				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
+			else if (c->getCarStatus() == FAILED) {
+				CheckUpList->enqueue(c);
+			}
 		}
 
-		// cancellations 
-		/*
+	
+		timestep++;
+	}
+}
+
+void Organizer::cancelled() {
+	// cancellations 
+	{
 		Patient* cp;
 		Cars* cancelledc;
 		while (!Cancellations->isEmpty()) {
@@ -230,16 +243,15 @@ void Organizer::mainSimulation(string filename)
 				Cancellations->dequeue(cp);
 				hospitals[cp->getNearestHospital() - 1].RemovePatient(cp, CANCELLATION);
 				delete cp; //removing patient from the system
-				// TODO add car assigned to patient from out to back cars list
+				// TODO add car assigned to patient from outcars to backcars list
+
 			}
 			else
 				break;
 		}
-		*/
-		timestep++;
 	}
-}
 
+}
 
 /////////////PHASE 1.2 SIMULATION, DON'T ADD TO IT, ADD TO mainSimulation()////////
 void Organizer::randSimulation(string filename)
@@ -545,10 +557,11 @@ void Organizer::CarFailure() {
 		{
 			rndc = (rand() % (outCars->getSize())) + 1; // generates random number between 1 and outcars number
 
-			for (int j = 1; j <= rndc - 1; j++) { //enques all elements before desired car
+			for (int j = 1; j <= rndc - 1; j++) { //deques all elements before desired car
 				outCars->peek(tempcar, pri);
 				outCars->dequeue(tempcar, pri); //deques first item
 				TempCars->enqueue(tempcar, pri); // enques it in temp prique
+				tempcar = nullptr;
 			}
 
 			outCars->peek(failedcar, Fpri);
@@ -558,28 +571,28 @@ void Organizer::CarFailure() {
 				TempCars->peek(tempcar, pri);
 				TempCars->dequeue(tempcar, pri);
 				outCars->enqueue(tempcar, pri);
+				tempcar = nullptr;
 			}
 
-			failedcar->setCarStatus(FAILED);
-			backCars->enqueue(failedcar, Fpri); // car added to back list 
-
-			//Question2: after backcars arrive to hispital are they added to free cars list???
-
-			//CheckUpList->enqueue(failedcar); // car added to checkup list 
-
-			//Question3: datastructure necessary for checkup list??
-
-			failedpatient = failedcar->getPatientAssigned(); //gets the patient that was assigned to the failedcar
-
-			//put patient on top of list to be assigned next
-			//hospitals[failedpatient->getNearestHospital() - 1].movetotop(failedpatient);
+			FailureAction(failedcar,Fpri);
 		}
 	}
 
-	//Delete dynamic allocations 
-	//delete TempCars;
-	//delete tempcar;
-	//delete failedcar;
+
+}
+
+void  Organizer::FailureAction(Cars* fc, int pri) {
+
+	Patient* failedp = nullptr;
+
+	fc->setCarStatus(FAILED);
+
+	backCars->enqueue(fc, pri); // car added to back list 
+
+	failedp = fc->getPatientAssigned(); //gets the patient that was assigned to the failedcar
+
+	//put patient on top of list to be assigned next
+	hospitals[failedp->getNearestHospital()-1].movetotop(failedp);
 }
 
 Organizer::~Organizer()

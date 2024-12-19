@@ -24,6 +24,7 @@ class Organizer
 	Hospital* hospitals;
 	priQueue <Cars*>* outCars;
 	priQueue <Cars*>* backCars;
+	LinkedQueue <Cars*>* CheckUpList;
 	LinkedQueue <Patient*>* finishedPatients;
 	int** distanceMatrix;
 
@@ -38,6 +39,7 @@ class Organizer
 	int scarCount; //total number of scars across hospitals
 	int ncarCount; //total number of ncars across hospitals
 	int carFailure;//cars failure probability 
+	int CheckUpTime;
 
 	UI* ui;
 	ofstream outputfile;
@@ -51,8 +53,10 @@ public:
 	void mainSimulation(string filename = "InputFiles/Input.txt");
 
 	int getTimeStep();
+	void cancelled();
 	void CarFailure();
-  
+	void FailureAction(Cars* fc, int pri);
+
 	// Print functions
 	void printHospitalLists();
 	void printOutCarsList();
