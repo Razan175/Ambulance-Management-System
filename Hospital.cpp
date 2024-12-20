@@ -56,8 +56,8 @@ Type Hospital::GetAvailableCar(Type patientType)
 }
 
 //Finds the suitable car for patient p , assigns p to it and returns the car in variable c
-bool Hospital::AssignPatient(Patient* p, Cars*& c)
-{
+//bool Hospital::AssignPatient(Patient* p, Cars*& c)
+//{
 	/*
 	Cars* amp;
 	if (p->getPatientType() == EMERGENCY) {
@@ -80,8 +80,8 @@ bool Hospital::AssignPatient(Patient* p, Cars*& c)
 	}
 
 	*/
-	return false;
-}
+	//return false;
+//}
 
 bool Hospital::RemovePatient(Patient*& p, Type t)
 {
@@ -208,6 +208,86 @@ bool Hospital::sendNPCar(Cars*& c)
 		return true;
 	}								//if there are no available cars, return false
 									//if true, puts the car with the assigned patient in C
+}
+Type Hospital::GetAvailableCar(Type patientType)
+{
+	Cars* tempCar;
+
+	if (patientType == EMERGENCY) {
+		if (!NCars.isEmpty()) {
+			NCars.peek(tempCar);
+			if (tempCar->getCarStatus() == READY)
+				return NORMAL;
+		}
+		if (!SCars.isEmpty()) {
+			SCars.peek(tempCar);
+			if (tempCar->getCarStatus() == READY)
+				return SPECIAL;
+		}
+	}
+	else if (patientType == SPECIAL) {
+		if (!SCars.isEmpty()) {
+			SCars.peek(tempCar);
+			if (tempCar->getCarStatus() == READY)
+				return SPECIAL;
+		}
+	}
+	else if (patientType == NORMAL) {
+
+		if (!NCars.isEmpty()) {
+			NCars.peek(tempCar);
+			if (tempCar->getCarStatus() == READY)
+				return NORMAL;
+		}
+	}
+
+	return CANCELLATION;
+}
+
+bool Hospital::AssignPatient(Patient* p, Cars*& c)
+{
+	if (!p)
+	{
+		return false;
+	}
+	c = nullptr;
+
+	Type availableCarType = GetAvailableCar(p->getPatientType());
+
+	if (availableCarType == CANCELLATION)
+
+	{
+		if (p->getPatientType() == EMERGENCY)
+		{
+			return false;
+		}
+
+		return false;
+	}
+	if (availableCarType == NORMAL)
+	{
+		NCars.dequeue(c);
+	}
+	else if (availableCarType == SPECIAL)
+	{
+		SCars.dequeue(c);
+	}
+
+	if (c && c->pickupPatient(p))
+	{
+		c->setCarStatus(ASSIGNED);
+		return true;
+	}
+
+	if (c)
+	{
+		if (c->getCarType() == NORMAL)
+			NCars.enqueue(c);
+		else
+			SCars.enqueue(c);
+	}
+
+	return false;
 }
 
 
