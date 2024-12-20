@@ -13,7 +13,6 @@ Organizer::Organizer()
 	NPCount = 0;
 	EPCount = 0;
 	carFailure = 0;
-	CheckUpTime = 0;
 	CheckUpList = new LinkedQueue<Cars*>;
 	Requests = new LinkedQueue <Patient*>;
 	Cancellations = new LinkedQueue <Patient*>;
@@ -46,8 +45,10 @@ bool Organizer::ReadFile(string filename)
 
 	// Scar and Ncar speeds
 	int scarSpeed, ncarSpeed;
-	file >> scarSpeed >> ncarSpeed;  
-	
+	file >> scarSpeed >> ncarSpeed; 
+	int SCheckUpTime, NCheckUpTime;
+	file >> SCheckUpTime>> NCheckUpTime;
+
 	distanceMatrix = new int* [hospitalCount];
 
 	//distance matrix
@@ -68,12 +69,12 @@ bool Organizer::ReadFile(string filename)
 		file >> scars >> ncars;
 		for (int j = 0; j < scars; j++)
 		{
-			Cars* newcar = new Cars(++carID,  i + 1, SPECIAL, scarSpeed, READY);
+			Cars* newcar = new Cars(++carID,  i + 1, SPECIAL, scarSpeed,SCheckUpTime, READY);
 			hospitals[i].AddCar(newcar);
 		}
 		for (int j = 0; j < ncars; j++)
 		{
-			Cars* newcar = new Cars(++carID, i + 1, NORMAL, ncarSpeed, READY);
+			Cars* newcar = new Cars(++carID, i + 1, NORMAL,NCheckUpTime, ncarSpeed, READY);
 			hospitals[i].AddCar(newcar);
 		}
 		scarCount += scars;
@@ -215,17 +216,25 @@ void Organizer::mainSimulation(string filename)
 		while (backCars->peek(c, pri) && (pri * -1) <= timestep)
 		{
 			backCars->dequeue(c, pri);
-			c->setCarStatus(READY);
 			// if car is not cancelled or failed
 			if (c->dropOffPatient(p) && c->getCarStatus() != FAILED && p->getPatientType() != CANCELLATION)
 			{
+				c->setCarStatus(READY);
 				finishedPatients->enqueue(p);
 				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 			else if (c->getCarStatus() == FAILED) {
 				CheckUpList->enqueue(c);
+				c->setchecktimestep(timestep); //recording when the car entered the checkup list 
 			}
+		}
+
+		//move cars from checkup to free
+		while (CheckUpList->peek(c) && c->getCarcheckTime()==timestep) {
+			c->setCarStatus(READY);
+			// c->setchecktimestep(0); not sure ab this bs isa sah 
+			hospitals[c->getHID() - 1].AddCar(c);
 		}
 
 		timestep++;

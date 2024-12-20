@@ -1,13 +1,13 @@
 #include "Cars.h"
 
-Cars::Cars(int id, int hid, Type type, int speed, CarStatus status)
+Cars::Cars(int id, int hid, Type type, int speed, int checkuptime, CarStatus status)
 {
 	carID = id;
 	hospitalID = hid;
 	carType = type;
 	carSpeed = speed;
 	carStatus = status;
-
+	checkupTime = checkuptime;
 	patientAssigned = nullptr;
 }
 
@@ -32,6 +32,9 @@ void Cars::setCarStatus(CarStatus cs)
 	carStatus = cs;
 }
 
+void Cars::setchecktimestep(int timestep) {
+	checkedtimestep = timestep;
+}
 
 // getters
 
@@ -65,6 +68,9 @@ Patient* Cars::getPatientAssigned()
 	return patientAssigned;
 }
 
+int Cars::getCarcheckTime() {
+	return checkupTime+checkedtimestep;
+}
 
 //bool pickupPatient(Patient* p);
 //bool dropOffPatient(Patient* p); // should i use Patient*& p ?? ***
