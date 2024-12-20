@@ -50,10 +50,6 @@ void Hospital::AddPatient(Patient*& p)
 	}
 }
 
-Type Hospital::GetAvailableCar(Type patientType)
-{
-	return Type();
-}
 
 //Finds the suitable car for patient p , assigns p to it and returns the car in variable c
 //bool Hospital::AssignPatient(Patient* p, Cars*& c)
@@ -164,6 +160,7 @@ bool Hospital::movetotop(Patient* p) {
 			SPList.enqueue(temp);
 		}
 	}
+	return false;
 }
 
 //////////////////////////

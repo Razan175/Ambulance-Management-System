@@ -1,4 +1,8 @@
 ﻿  Organizer.cpp
-C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(302,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(566,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(277,77): warning C4806: '==': unsafe operation: no value of type 'bool' promoted to type 'CarStatus' can equal the given constant
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(339,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(603,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(600,11): warning C4101: 'failedpatient': unreferenced local variable
+  UI.cpp
+  Generating Code...
   phase1.2.vcxproj -> C:\Data_Structure\Project\Ambulance-Management-System\x64\Debug\phase1.2.exe

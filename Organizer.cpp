@@ -74,7 +74,7 @@ bool Organizer::ReadFile(string filename)
 		}
 		for (int j = 0; j < ncars; j++)
 		{
-			Cars* newcar = new Cars(++carID, i + 1, NORMAL,NCheckUpTime, ncarSpeed, READY);
+			Cars* newcar = new Cars(++carID, i + 1, NORMAL, ncarSpeed, NCheckUpTime, READY);
 			hospitals[i].AddCar(newcar);
 		}
 		scarCount += scars;
@@ -202,8 +202,9 @@ void Organizer::mainSimulation(string filename)
 			}
 		}
 
-		CarFailure(); //called after cars are out 
-		cancelled(); //called after cars are out
+		//CarFailure(); //called after cars are out 
+		//cancelled(); //called after cars are out
+
 		//move from out to back
 		while (outCars->peek(c, pri) && (pri * -1) <= timestep)
 		{
@@ -232,6 +233,12 @@ void Organizer::mainSimulation(string filename)
 				CheckUpList->enqueue(c);
 				c->setchecktimestep(timestep); //recording when the car entered the checkup list 
 			}
+			else
+			{
+				c->setCarStatus(READY);
+				fpatients++;
+				hospitals[c->getHID() - 1].AddCar(c);
+			}
 		}
 
 		//move cars from checkup list to free
@@ -245,9 +252,6 @@ void Organizer::mainSimulation(string filename)
 		timestep++;
 		ui->simulateMode();
 	}
-
-
-
 }
 
 void Organizer::cancelled() {
@@ -293,6 +297,7 @@ void Organizer::cancelled() {
 			}
 			
 		}
+
 
 
 }
@@ -680,6 +685,7 @@ Hospital* Organizer::FindEP_Random_Hospital(int currentHospitalID)
 	while (randomIndex == currentIndex);
 
 	return &hospitals[randomIndex];
+
 
 }
 
