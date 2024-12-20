@@ -162,10 +162,14 @@ void Organizer::mainSimulation(string filename)
 			p = nullptr;
 			while (hospitals[i].sendEPCar(c, p))
 			{
-				if (c == nullptr)
+				if (c == nullptr && p!= nullptr)
 				{
-					//find suitable hosptial
-
+					Hospital* randomHospital = FindEP_Random_Hospital(i + 1);
+					if (randomHospital)
+					{
+						randomHospital->AddPatient(p);
+					}
+					p = nullptr;
 				}
 				else if (p != nullptr)
 				{
@@ -241,6 +245,9 @@ void Organizer::mainSimulation(string filename)
 		timestep++;
 		ui->simulateMode();
 	}
+
+
+
 }
 
 void Organizer::cancelled() {
@@ -617,6 +624,66 @@ void Organizer::CarFailure() {
 
 
 }
+
+//Hospital* Organizer::findSuitableHospital(int currentHospitalID)
+//{
+//	if (currentHospitalID < 1 || currentHospitalID > hospitalCount) {
+//		return nullptr; 
+//	}
+//	int currentIndex = currentHospitalID - 1;
+//
+//	// get the minEP list 
+//	int minEPCount = INT_MAX;
+//	for (int i = 0; i < hospitalCount; i++) {
+//		if (i != currentIndex) 
+//		{  // Skip current hospital
+//			int epCount = hospitals[i].getEmergencyRequestsCount();
+//			if (epCount < minEPCount) 
+//			{
+//				minEPCount = epCount;
+//			}
+//		}
+//	}
+//
+//	// Second pass: Among hospitals with minimum EP count, find nearest
+//	int shortestDistance = INT_MAX;
+//	Hospital* bestHospital = nullptr;
+//
+//	for (int i = 0; i < hospitalCount; i++) {
+//		if (i != currentIndex &&
+//			hospitals[i].getEmergencyRequestsCount() == minEPCount) {
+//
+//			int distance = distanceMatrix[currentIndex][i];
+//			if (distance < shortestDistance) {
+//				shortestDistance = distance;
+//				bestHospital = &hospitals[i];
+//			}
+//		}
+//	}
+//
+//	return bestHospital;
+//}
+
+Hospital* Organizer::FindEP_Random_Hospital(int currentHospitalID)
+{
+	if (hospitalCount <= 1)
+	{
+		return nullptr;
+	}
+	int currentIndex = currentHospitalID - 1;
+	int randomIndex;
+
+	do 
+	{
+		randomIndex = rand() % hospitalCount;
+	}
+	while (randomIndex == currentIndex);
+
+	return &hospitals[randomIndex];
+
+}
+
+
 
 void  Organizer::FailureAction(Cars* fc, int pri) {
 

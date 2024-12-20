@@ -56,6 +56,7 @@ public:
 	void cancelled();
 	void CarFailure();
 	void FailureAction(Cars* fc, int pri);
+	Hospital* FindEP_Random_Hospital(int currentHospitalID);
 
 	// Print functions
 	void printHospitalLists();
@@ -63,7 +64,8 @@ public:
 	void printBackCarsList();
 	void printFinishedPatientsList();
 
-	
+	// Finding closest hospital for EP when no avalible cars
+	//Hospital* findSuitableHospital(int currentHospitalID);
 
 	~Organizer();
 };

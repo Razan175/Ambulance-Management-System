@@ -170,15 +170,21 @@ bool Hospital::movetotop(Patient* p) {
 /// SEND CAR FUNCTIONS///
 ////////////////////////
 
-bool Hospital::sendEPCar(Cars* &c,Patient *&p)
+bool Hospital::sendEPCar(Cars*& c, Patient*& p)
 {
 	int pri;
-	if (EPList.isEmpty())  //if list is empty ,return false
+	if (EPList.isEmpty())
 		return false;
+
 	EPList.dequeue(p, pri);
-	return AssignPatient(p, c);		//if there are no available cars, return false and send the patient to the organizer
-									//to find them a new hospital
-									//if true, assigns patient p to car and puts it in c
+
+	if (!AssignPatient(p, c)) 
+	{
+		// Let organizer handle finding alternative hospital
+		return true;
+	}
+
+	return true;
 }
 
 bool Hospital::sendSPCar(Cars*& c)
@@ -261,7 +267,7 @@ bool Hospital::AssignPatient(Patient* p, Cars*& c)
 		{
 			return false;
 		}
-
+		// No available cars for EP so we wil call FindHospitalEP function in organizer
 		return false;
 	}
 	if (availableCarType == NORMAL)
@@ -289,6 +295,7 @@ bool Hospital::AssignPatient(Patient* p, Cars*& c)
 
 	return false;
 }
+
 
 
 
