@@ -142,8 +142,9 @@ void Organizer::mainSimulation(string filename)
 	int pri;
 	int fpatients = 0;
 
-	while (fpatients != requestCount)
+	while (fpatients <  requestCount)
 	{
+
 		//sending all patients to their hospital at the given timestep
 		while (Requests->peek(p) && p->getRequestTime() <= timestep)
 		{
@@ -152,42 +153,46 @@ void Organizer::mainSimulation(string filename)
 			p = nullptr;
 		}
 
-		ui->simulateMode();
-
 		//moving cars from free to out
 		for (int i = 0; i < hospitalCount; i++)
 		{
 
 			//handling emergency patients first
-			while (hospitals[i].sendEPCar(c))
+			p = nullptr;
+			while (hospitals[i].sendEPCar(c, p))
 			{
-				p = c->getPatientAssigned();
-				p->setPickupTime((timestep + (p->getDistance() / c->getSpeed())));
-				c->setCarStatus(ASSIGNED);
+				if (c == nullptr)
+				{
+					//find suitable hosptial
 
-				//we want the highest priority to the smallest pickup time
-				//the given pri-queues give the highest priority to the biggest integer number
-				//so to solve this, we pass the pickup time with a negative sign
+				}
+				else if (p != nullptr)
+				{
+					p = c->getPatientAssigned();
+					p->setPickupTime((timestep + (p->getDistance() / c->getSpeed())));
 
-				outCars->enqueue(c, -1 * p->getPickupTime());
+					//we want the highest priority to the smallest pickup time
+					//the given pri-queues give the highest priority to the biggest integer number
+					//so to solve this, we pass the pickup time with a negative sign
+
+					outCars->enqueue(c, -1 * p->getPickupTime());
+					p = nullptr;
+				}
+
 			}
-
-
 			//handling special patients next
 			while (hospitals[i].sendSPCar(c))
 			{
 				p = c->getPatientAssigned();
 				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
-				c->setCarStatus(ASSIGNED);
-				outCars->enqueue(c, -1 * p->getPickupTime());
+				outCars->enqueue(c, -1 * p->getPickupTime());	
 			}
 
 			//handling normal patients
 			while (hospitals[i].sendNPCar(c))
 			{
 				p = c->getPatientAssigned();
-				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
-				c->setCarStatus(ASSIGNED);
+				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed())); 
 				outCars->enqueue(c, -1 * p->getPickupTime());
 			}
 		}
@@ -210,10 +215,10 @@ void Organizer::mainSimulation(string filename)
 		while (backCars->peek(c, pri) && (pri * -1) <= timestep)
 		{
 			backCars->dequeue(c, pri);
+			c->setCarStatus(READY);
 			// if car is not cancelled or failed
-			if (c->dropOffPatient(p) || c->getCarStatus() != FAILED || p->getPatientType() == CANCELLATION)
+			if (c->dropOffPatient(p) && c->getCarStatus() != FAILED && p->getPatientType() != CANCELLATION)
 			{
-				c->setCarStatus(READY);
 				finishedPatients->enqueue(p);
 				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
@@ -223,8 +228,8 @@ void Organizer::mainSimulation(string filename)
 			}
 		}
 
-	
 		timestep++;
+		ui->simulateMode();
 	}
 }
 
@@ -249,7 +254,9 @@ void Organizer::cancelled() {
 			else
 				break;
 		}
+
 	}
+
 
 }
 

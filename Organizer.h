@@ -39,7 +39,7 @@ class Organizer
 	int scarCount; //total number of scars across hospitals
 	int ncarCount; //total number of ncars across hospitals
 	int carFailure;//cars failure probability 
-	int CheckUpTime;
+	int CheckUpTime; //will be added to the input file
 
 	UI* ui;
 	ofstream outputfile;
