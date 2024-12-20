@@ -198,7 +198,7 @@ void Organizer::mainSimulation(string filename)
 		}
 
 		CarFailure(); //called after cars are out 
-
+		cancelled(); //called after cars are out
 		//move from out to back
 		while (outCars->peek(c, pri) && (pri * -1) <= timestep)
 		{
@@ -235,27 +235,47 @@ void Organizer::mainSimulation(string filename)
 
 void Organizer::cancelled() {
 	// cancellations 
-	{
+
 		Patient* cp;
-		Cars* cancelledc;
-		while (!Cancellations->isEmpty()) {
+		Cars* ccar;
+		int prior;
+		while (!Cancellations->isEmpty())
+		{
 			cp = nullptr;
-			cancelledc = nullptr;
-			int prior;
+			ccar = nullptr;
 			Cancellations->peek(cp);
-			if (cp && cp->getRequestTime() <= timestep)
+			if (cp->getRequestTime() <= timestep)
 			{
 				Cancellations->dequeue(cp);
-				hospitals[cp->getNearestHospital() - 1].RemovePatient(cp, CANCELLATION);
-				delete cp; //removing patient from the system
-				// TODO add car assigned to patient from outcars to backcars list
+				priQueue <Cars*>* TempCars = new priQueue <Cars*>;
+				Cars* tempcar;
+				int tprior;
+				//search for patient in outcars list 
+				while (!outCars->isEmpty()) {
+					outCars->peek(tempcar,tprior);
+					if (tempcar->getPatientAssigned() == cp && !tempcar->getCarStatus() == LOADED) {
+						//patient found and not picked up yet 
+						outCars->dequeue(ccar, prior);
 
+						//move from out to back
+						prior += (-1 * (cp->getDistance() / ccar->getSpeed()));
+						backCars->enqueue(ccar, prior);
+						delete cp; //remove patient from the system 
+						break;
+					}
+					else {
+						outCars->dequeue(tempcar, tprior);
+						TempCars->enqueue(tempcar, tprior);
+					}
+				}
+				//patient found and handelled 
+				while (!TempCars->isEmpty()) {
+					TempCars->dequeue(tempcar,tprior);
+					outCars->enqueue(tempcar, tprior);
+				}
 			}
-			else
-				break;
+			
 		}
-
-	}
 
 
 }

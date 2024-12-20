@@ -99,18 +99,18 @@ bool Hospital::RemovePatient(Patient*& p, Type t)
 	{
 		NPList.dequeue(p);
 	}
-	else if (t == CANCELLATION)
-	{
-		//loop on all Ncars list "another linkedque"
-		Cars* nc = nullptr;
-		while (NCars.isEmpty()) {
-			NCars.peek(nc);
-			if (nc->getPatientAssigned() == p && !nc->getCarStatus() == LOADED) {
-				//patient is not picked up by the assigned car yet
-				NPList.dequeue(p);
-			}
-		}
-	}
+	//else if (t == CANCELLATION)
+	//{
+	//	//loop on all Ncars list "another linkedque"
+	//	Cars* nc = nullptr;
+	//	while (NCars.isEmpty()) {
+	//		NCars.peek(nc);
+	//		if (nc->getPatientAssigned() == p && !nc->getCarStatus() == LOADED) {
+	//			//patient is not picked up by the assigned car yet
+	//			NPList.dequeue(p);
+	//		}
+	//	}
+	//}
 	else
 	{
 		p = nullptr;
