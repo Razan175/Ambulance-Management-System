@@ -38,7 +38,7 @@ class Organizer
 	int EPCount;
 	int scarCount; //total number of scars across hospitals
 	int ncarCount; //total number of ncars across hospitals
-	int carFailure;//cars failure probability 
+	int carFailure;//cars failure probability number 
 	
 
 	UI* ui;

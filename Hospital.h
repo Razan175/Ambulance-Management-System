@@ -35,7 +35,7 @@ public:
 		bool assignPatient(patient* p, Cars* &c): links given patient to a car and returns the car in c(calls getAvailableCar())
 		note that it returns false if there are no available cars
 
-		bool sendXPCar(): these are the functions called by the organizer at each timestep
+		bool sendXPCar(): these are the functions called by the organizer at each timestep...
 
 	*/
 	// counts

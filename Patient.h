@@ -6,7 +6,7 @@
 #include "DSfile/priQueue.h"
 
 using namespace std;
-// in general han3ml list l kol kind of patient
+// in general han3ml list l kol kind of patient.
 
 #define MAX_SEVERITY 5
 class Patient

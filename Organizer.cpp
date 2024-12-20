@@ -230,7 +230,7 @@ void Organizer::mainSimulation(string filename)
 			}
 		}
 
-		//move cars from checkup to free
+		//move cars from checkup list to free
 		while (CheckUpList->peek(c) && c->getCarcheckTime()==timestep) {
 			CheckUpList->dequeue(c);
 			c->setCarStatus(READY);

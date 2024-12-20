@@ -31,6 +31,7 @@ public:
 	void setSpeed(int s);
 	void setCarStatus(CarStatus cs);
 	void setchecktimestep(int timestep);
+	//comment
 	// Getters
 	int getID(); // We can use it later
 	int getHID();

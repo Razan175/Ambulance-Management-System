@@ -14,7 +14,7 @@ bool Hospital::AddCar(Cars* &car)
 	return true;
 
 }
-
+//comment
 bool Hospital::RemoveSCar(Cars*& car)
 {
 	Cars* p;
