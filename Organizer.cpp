@@ -232,6 +232,7 @@ void Organizer::mainSimulation(string filename)
 
 		//move cars from checkup to free
 		while (CheckUpList->peek(c) && c->getCarcheckTime()==timestep) {
+			CheckUpList->dequeue(c);
 			c->setCarStatus(READY);
 			// c->setchecktimestep(0); not sure ab this bs isa sah 
 			hospitals[c->getHID() - 1].AddCar(c);
