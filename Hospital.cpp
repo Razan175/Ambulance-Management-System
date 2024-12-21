@@ -195,7 +195,7 @@ bool Hospital::sendSPCar(Cars*& c)
 		SPList.dequeue(p);
 		return true;		//if there are no available cars, return false
 	}
-							//if true, puts the car with the assigned patient in C
+	return 	false;					//if true, puts the car with the assigned patient in C
 
 }
 
@@ -210,7 +210,8 @@ bool Hospital::sendNPCar(Cars*& c)
 		NPList.dequeue(p);
 		return true;
 	}								//if there are no available cars, return false
-									//if true, puts the car with the assigned patient in C
+		
+	return false;								//if true, puts the car with the assigned patient in C
 }
 Type Hospital::GetAvailableCar(Type patientType)
 {
@@ -260,10 +261,6 @@ bool Hospital::AssignPatient(Patient* p, Cars*& c)
 	if (availableCarType == CANCELLATION)
 
 	{
-		if (p->getPatientType() == EMERGENCY)
-		{
-			return false;
-		}
 		// No available cars for EP so we wil call FindHospitalEP function in organizer
 		return false;
 	}
