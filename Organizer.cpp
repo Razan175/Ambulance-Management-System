@@ -272,7 +272,9 @@ void Organizer::mainSimulation()
 				c->setCarStatus(READY);
 				p->setFinishTime(timestep);
 				AddFinishedPatient(p);
-				//fpatients++;
+		
+				
+				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 			else if (c->getCarStatus() == FAILED) {
@@ -282,7 +284,7 @@ void Organizer::mainSimulation()
 			else
 			{
 				c->setCarStatus(READY);
-				//fpatients++;
+				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 		}
@@ -533,8 +535,8 @@ void Organizer::printOutCarsList()
 				ui->print(temp->getID());
 				ui->print("_H");
 				ui->print(temp->getHID());
-				//ui->print("_P");
-				//ui->print(temp->getPatientAssigned()->getID()); to be done in phase 2
+				ui->print("_P");
+				ui->print(temp->getPatientAssigned()->getID()); 
 			}
 			else
 			{
@@ -545,8 +547,8 @@ void Organizer::printOutCarsList()
 				ui->print(temp->getID());
 				ui->print("_H");
 				ui->print(temp->getHID());
-				//ui->print("_P");
-				//ui->print(temp->getPatientAssigned()->getID()); to be done in phase 2
+				ui->print("_P");
+				ui->print(temp->getPatientAssigned()->getID());
 				ui->print(", ");
 			}
 			outCars->enqueue(temp, pri);
