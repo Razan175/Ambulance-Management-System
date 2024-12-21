@@ -225,7 +225,7 @@ void Organizer::mainSimulation(string filename)
 			if (c->dropOffPatient(p) && c->getCarStatus() != FAILED && p->getPatientType() != CANCELLATION)
 			{
 				c->setCarStatus(READY);
-				finishedPatients->enqueue(p);
+				AddFinishedPatient(p);
 				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
@@ -704,7 +704,19 @@ void  Organizer::FailureAction(Cars* fc, int pri) {
 	//put patient on top of list to be assigned next
 	hospitals[failedp->getNearestHospital()-1].movetotop(failedp);
 }
+bool Organizer::AddFinishedPatient(Patient* p)
+{
+	if (!p) {
+		return false;
+	}
 
+	int totalTime = timestep - p->getRequestTime();
+	//p->setServiceTime(totalTime);
+	// add to finish patients queue    
+	finishedPatients->enqueue(p);
+
+	return true;
+}
 Organizer::~Organizer()
 {
 	delete[] hospitals;

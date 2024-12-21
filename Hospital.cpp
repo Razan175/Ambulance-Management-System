@@ -175,12 +175,12 @@ bool Hospital::sendEPCar(Cars*& c, Patient*& p)
 
 	EPList.dequeue(p, pri);
 
-	if (!AssignPatient(p, c)) 
+	if (AssignPatient(p, c)) 
 	{
 		// Let organizer handle finding alternative hospital
 		return true;
 	}
-
+	c = nullptr;
 	return true;
 }
 
