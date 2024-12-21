@@ -1,57 +1,5 @@
 #include "Organizer.h"
 
-
-
-bool Organizer::WriteFile(string filename, int timestamp)
-{
-
-	ofstream outputFile;
-	string noDotTxt = ui->getFileName().substr(0, ui->getFileName().size() - 4);
-	string fileoutput = noDotTxt + "_output.txt";
-	outputFile.open(fileoutput, ios::out);
-	Patient* patient = nullptr;
-
-	int totalbusytime = 0;
-
-	int totalWaitingTime = 0;
-
-	if (outputFile.is_open())
-	{
-		outputFile << "FT		PID			QT			WT" << endl;
-
-
-		for (int i = 0, z = finishedPatients->getSize(); i < z; i++)
-		{
-			finishedPatients->dequeue(patient);
-
-			totalWaitingTime += patient->getPatientWaitingTime();
-			totalbusytime += patient->getBusyCarAssigned();
-
-			outputFile << patient->getFinishTime() << "		" << patient->getID() << "		"
-				<< patient->getRequestTime() << "		" << patient->getPatientWaitingTime() << endl;
-
-			finishedPatients->enqueue(patient);
-		}
-
-
-		outputFile << "----------------------------------------------" << endl;
-
-		outputFile << "Patients: " << NPCount + SPCount + EPCount << " [NP: " << NPCount << ", SP: " << SPCount << ", VP: " << EPCount << "]" << endl;
-		outputFile << "Hospitals = " << hospitalCount << endl;
-		outputFile << "Cars: " << scarCount + ncarCount << " [SCar: " << scarCount << ", NCar: " << ncarCount << "]" << endl;
-
-
-		outputFile << "Avg utilization = " << ((float)(totalbusytime / (scarCount + ncarCount)) / timestamp) * 100 << endl;
-
-
-
-		outputFile.close();
-
-		return true;
-
-	}
-	return false;
-}
 Organizer::Organizer()
 {
 	timestep = 1;
@@ -84,10 +32,6 @@ bool Organizer::ReadFile(string filename)
 	file.open("InputFiles/" + filename + ".txt");
 
 	if (file.fail())
-
-
-
-
 	{
 		cout << "Cannot open file" << endl;
 		return false;
@@ -185,7 +129,54 @@ bool Organizer::ReadFile(string filename)
 	return true;
 }
 
-void Organizer::mainSimulation(string filename)
+bool Organizer::WriteFile(string filename, int timestamp)
+{
+
+	ofstream outputFile;
+	//string noDotTxt = ui->getFileName().substr(0, ui->getFileName().size() - 4);
+	string fileoutput = "OutputFiles/" + ui->getFileName() + "_output.txt";
+	outputFile.open(fileoutput, ios::out);
+	Patient* patient = nullptr;
+
+	int totalbusytime = 0;
+
+	int totalWaitingTime = 0;
+
+	if (outputFile.is_open())
+	{
+		outputFile << "FT		PID			QT			WT" << endl;
+		for (int i = 0, z = finishedPatients->getSize(); i < z; i++)
+		{
+			finishedPatients->dequeue(patient);
+
+			totalWaitingTime += patient->getPatientWaitingTime();
+			totalbusytime += patient->getBusyCarAssigned();
+
+			outputFile << patient->getFinishTime() << "		" << patient->getID() << "		"
+				<< patient->getRequestTime() << "		" << patient->getPatientWaitingTime() << endl;
+
+			finishedPatients->enqueue(patient);
+		}
+
+
+		outputFile << "----------------------------------------------" << endl;
+
+		outputFile << "Patients: " << NPCount + SPCount + EPCount << " [NP: " << NPCount << ", SP: " << SPCount << ", VP: " << EPCount << "]" << endl;
+		outputFile << "Hospitals = " << hospitalCount << endl;
+		outputFile << "Cars: " << scarCount + ncarCount << " [SCar: " << scarCount << ", NCar: " << ncarCount << "]" << endl;
+
+
+		outputFile << "Avg utilization = " << ((float)(totalbusytime / (scarCount + ncarCount)) / timestamp) * 100 << endl;
+
+		outputFile.close();
+
+		return true;
+
+	}
+	return false;
+}
+
+void Organizer::mainSimulation()
 {
 	ui->startSimulation();
 	if (!ReadFile(ui->getFileName()))
@@ -281,6 +272,7 @@ void Organizer::mainSimulation(string filename)
 			if (c->dropOffPatient(p) && c->getCarStatus() != FAILED && p->getPatientType() != CANCELLATION)
 			{
 				c->setCarStatus(READY);
+				p->setFinishTime(timestep);
 				AddFinishedPatient(p);
 				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
