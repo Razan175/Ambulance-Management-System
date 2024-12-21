@@ -193,12 +193,11 @@ void Organizer::mainSimulation(string filename)
 
 	
 	ui->selectMode();
-
+	
 	Patient* p = nullptr;
 	Cars* c;
 	int pri;
 	int fpatients = 0;
-
 	while (fpatients <  requestCount)
 	{
 
@@ -259,8 +258,7 @@ void Organizer::mainSimulation(string filename)
 		}
 
 		CarFailure(); //called after cars are out 
-		//cancelled(); //called after cars are out
-
+		cancelled(); //called after cars are out
 		//move from out to back
 		while (outCars->peek(c, pri) && (pri * -1) <= timestep)
 		{
@@ -318,21 +316,18 @@ void Organizer::cancelled() {
 		Patient* cp;
 		Cars* ccar;
 		int prior;
-		while (!Cancellations->isEmpty())
+		while (Cancellations->peek(cp)&& cp->getRequestTime() == timestep)
 		{
 			cp = nullptr;
 			ccar = nullptr;
-			Cancellations->peek(cp);
-			if (cp->getRequestTime() <= timestep)
-			{
-				Cancellations->dequeue(cp);
-				priQueue <Cars*>* TempCars = new priQueue <Cars*>;
-				Cars* tempcar;
-				int tprior;
-				//search for patient in outcars list 
-				while (!outCars->isEmpty()) {
+			Cancellations->dequeue(cp);
+			priQueue <Cars*>* TempCars = new priQueue <Cars*>;
+			Cars* tempcar;
+			int tprior;
+			//search for patient in outcars list 
+			while (!outCars->isEmpty()) {
 					outCars->peek(tempcar,tprior);
-					if (tempcar->getPatientAssigned() == cp && !tempcar->getCarStatus() == LOADED) {
+					if (tempcar->getPatientAssigned() == cp && tempcar->getCarStatus() != LOADED) {
 						//patient found and not picked up yet 
 						outCars->dequeue(ccar, prior);
 
@@ -347,17 +342,12 @@ void Organizer::cancelled() {
 						TempCars->enqueue(tempcar, tprior);
 					}
 				}
-				//patient found and handelled 
-				while (!TempCars->isEmpty()) {
+			//patient found and handelled 
+			while (!TempCars->isEmpty()) {
 					TempCars->dequeue(tempcar,tprior);
 					outCars->enqueue(tempcar, tprior);
 				}
-			}
-			
 		}
-
-
-
 }
 
 /////////////PHASE 1.2 SIMULATION, DON'T ADD TO IT, ADD TO mainSimulation()////////
