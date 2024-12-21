@@ -272,7 +272,7 @@ void Organizer::mainSimulation()
 				c->setCarStatus(READY);
 				p->setFinishTime(timestep);
 				AddFinishedPatient(p);
-				fpatients++;
+				//fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 			else if (c->getCarStatus() == FAILED) {
@@ -282,7 +282,7 @@ void Organizer::mainSimulation()
 			else
 			{
 				c->setCarStatus(READY);
-				fpatients++;
+				//fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 		}

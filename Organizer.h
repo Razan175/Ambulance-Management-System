@@ -56,15 +56,12 @@ public:
 	int getTimeStep();
 	void cancelled();
 	void CarFailure();
-	void FailureAction(Cars* fc, int pri);
-	
+	void FailureAction(Cars* fc, int pri);	
 	void AddFinishedPatient(Patient* p);
-
 	// Print functions
 	void printHospitalLists();
 	void printOutCarsList();
 	void printBackCarsList();
-
 	// Finding closest hospital for EP when no avalible cars
 	//Hospital* findSuitableHospital(int currentHospitalID);
 	Hospital* FindEP_Random_Hospital(int currentHospitalID);

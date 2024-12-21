@@ -10,19 +10,17 @@ class Hospital
 	LinkedQueue <Patient*> SPList;
 	priQueue <Patient*> EPList;
 	LinkedQueue <Patient*> NPList;
-
 	LinkedQueue <Cars*> NCars;
 	LinkedQueue <Cars*> SCars;
 
-	Type GetAvailableCar(Type patientType);
-	bool AssignPatient(Patient* p, Cars*& c);
 public:
 	bool AddCar(Cars* &car);
 	bool RemoveSCar(Cars*& car);
 	bool RemoveNCar(Cars*& car);
 	void AddPatient(Patient*& p);
 	bool RemovePatient(Patient*& p, Type t); 
-
+	Type GetAvailableCar(Type patientType);
+	bool AssignPatient(Patient* p, Cars*& c);
 	bool movetotop(Patient* p);
 	bool sendEPCar(Cars* &c, Patient *& p);
 	bool sendSPCar(Cars*& c);
