@@ -1,0 +1,11 @@
+﻿  Cars.cpp
+  Hospital.cpp
+  Organizer.cpp
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(329,77): warning C4806: '==': unsafe operation: no value of type 'bool' promoted to type 'CarStatus' can equal the given constant
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(391,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(655,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Patient.cpp
+  Source.cpp
+  UI.cpp
+Organizer.obj : error LNK2001: unresolved external symbol "public: int __cdecl Patient::getFinishTime(void)" (?getFinishTime@Patient@@QEAAHXZ)
+C:\Data_Structure\Project\Ambulance-Management-System\x64\Release\phase1.2.exe : fatal error LNK1120: 1 unresolved externals

@@ -1,6 +1,56 @@
 #include "Organizer.h"
 
 
+
+bool Organizer::WriteFile(string filename, int timestamp)
+{
+
+	ofstream outputFile;
+	outputFile.open("output6.txt", ios::out);
+
+	Patient* patient = nullptr;
+
+	int totalbusytime = 0;
+
+	int totalWaitingTime = 0;
+
+	if (outputFile.is_open())
+	{
+		outputFile << "FT		PID			QT			WT" << endl;
+
+
+		for (int i = 0, z = finishedPatients->getSize(); i < z; i++)
+		{
+			finishedPatients->dequeue(patient);
+
+			totalWaitingTime += patient->getPatientWaitingTime();
+			totalbusytime += patient->getBusyCarAssigned();
+
+			outputFile << patient->getFinishTime() << "		" << patient->getID() << "		"
+				<< patient->getRequestTime() << "		" << patient->getPatientWaitingTime() << endl;
+
+			finishedPatients->enqueue(patient);
+		}
+
+
+		outputFile << "----------------------------------------------" << endl;
+
+		outputFile << "Patients: " << NPCount + SPCount + EPCount << " [NP: " << NPCount << ", SP: " << SPCount << ", VP: " << EPCount << "]" << endl;
+		outputFile << "Hospitals = " << hospitalCount << endl;
+		outputFile << "Cars: " << scarCount + ncarCount << " [SCar: " << scarCount << ", NCar: " << ncarCount << "]" << endl;
+
+
+		outputFile << "Avg utilization = " << ((float)(totalbusytime / (scarCount + ncarCount)) / timestamp) * 100 << endl;
+
+
+
+		outputFile.close();
+
+		return true;
+
+	}
+	return false;
+}
 Organizer::Organizer()
 {
 	timestep = 1;
@@ -252,6 +302,8 @@ void Organizer::mainSimulation(string filename)
 		timestep++;
 		ui->simulateMode();
 	}
+	WriteFile("output.txt", timestep);
+	ui->endSimulation();
 }
 
 void Organizer::cancelled() {
@@ -597,7 +649,7 @@ void Organizer::CarFailure() {
 	int pri;
 	int Fpri;
 	Cars* failedcar;// = new Cars;
-	Patient* failedpatient;
+	//Patient* failedpatient;
 
 	{
 		srand(time(0));

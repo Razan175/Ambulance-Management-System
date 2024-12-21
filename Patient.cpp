@@ -27,6 +27,17 @@ int Patient::getNearestHospital()
     return near_hospital_ID;
 }
 
+int Patient::getPatientWaitingTime()
+{
+    return this->getPickupTime() - this->getRequestTime();
+}
+
+int Patient::getBusyCarAssigned()
+{
+    // busy time = when car assigned to patient when he request it + car going to patient and bring  him back to hospital
+    return this->getFinishTime() - this->getRequestTime();
+}
+
 int Patient::getDistance()
 {
     return distance;
@@ -55,5 +66,10 @@ void Patient::setPickupTime(int time)
 void Patient::setPatientType(Type PyT)
 {
     P_type = PyT;
+}
+
+void Patient::setFinishTime(int ft)
+{
+    finishTime = ft;
 }
 //comment

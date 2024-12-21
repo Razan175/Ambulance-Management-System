@@ -19,6 +19,7 @@ private:
     int P_ID;
     int distance;
     int Severity;
+    int finishTime;
     Type P_type; // get type of patient 
 public:
     // constructor + member functions
@@ -32,9 +33,14 @@ public:
     Type getPatientType();
     int getPickupTime();
     int getSeverity();
+    int getPatientWaitingTime();
+    int getFinishTime();
+    int getBusyCarAssigned();
     // setter
     void setPickupTime(int time);
     void setPatientType(Type PyT);
+    void setFinishTime(int timestep);
+
 
 };
 

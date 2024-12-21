@@ -196,7 +196,7 @@ bool Hospital::sendSPCar(Cars*& c)
 		return true;		//if there are no available cars, return false
 	}
 							//if true, puts the car with the assigned patient in C
-
+	return false;
 }
 
 bool Hospital::sendNPCar(Cars*& c)
@@ -211,6 +211,7 @@ bool Hospital::sendNPCar(Cars*& c)
 		return true;
 	}								//if there are no available cars, return false
 									//if true, puts the car with the assigned patient in C
+	return false;
 }
 Type Hospital::GetAvailableCar(Type patientType)
 {

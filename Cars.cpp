@@ -120,6 +120,11 @@ bool Cars::dropOffPatient(Patient* &p)
 	return true;
 }
 
+
+int Patient::getFinishTime()
+{
+	return finishTime;
+}
 Cars::~Cars()
 {
 	// is it important ?? ***	

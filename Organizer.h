@@ -49,9 +49,10 @@ public:
 
 	Organizer();
 	bool ReadFile(string filename = "InputFiles/Input.txt");
+	bool WriteFile(string filename, int timestamp);
 	void randSimulation(string filename = "InputFiles/Input.txt");
 	void mainSimulation(string filename = "InputFiles/Input.txt");
-
+	void printFinishedPatientsList();
 	int getTimeStep();
 	void cancelled();
 	void CarFailure();
@@ -63,7 +64,6 @@ public:
 	void printHospitalLists();
 	void printOutCarsList();
 	void printBackCarsList();
-	void printFinishedPatientsList();
 
 	// Finding closest hospital for EP when no avalible cars
 	//Hospital* findSuitableHospital(int currentHospitalID);
