@@ -58,7 +58,7 @@ public:
 	void CarFailure();
 	void FailureAction(Cars* fc, int pri);
 	Hospital* FindEP_Random_Hospital(int currentHospitalID);
-	bool AddFinishedPatient(Patient* p);
+	void AddFinishedPatient(Patient* p);
 
 	// Print functions
 	void printHospitalLists();

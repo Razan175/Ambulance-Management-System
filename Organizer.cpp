@@ -209,7 +209,7 @@ void Organizer::mainSimulation(string filename)
 		{
 
 			//handling emergency patients first
-			p = nullptr;
+
 			while (hospitals[i].sendEPCar(c, p))
 			{
 				if (c == nullptr && p!= nullptr)
@@ -276,7 +276,7 @@ void Organizer::mainSimulation(string filename)
 			{
 				c->setCarStatus(READY);
 				AddFinishedPatient(p);
-				fpatients++;
+				//fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 			else if (c->getCarStatus() == FAILED) {
@@ -286,7 +286,7 @@ void Organizer::mainSimulation(string filename)
 			else
 			{
 				c->setCarStatus(READY);
-				fpatients++;
+				//fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 		}
@@ -741,8 +741,6 @@ Hospital* Organizer::FindEP_Random_Hospital(int currentHospitalID)
 
 }
 
-
-
 void  Organizer::FailureAction(Cars* fc, int pri) {
 
 	Patient* failedp = nullptr;
@@ -756,19 +754,16 @@ void  Organizer::FailureAction(Cars* fc, int pri) {
 	//put patient on top of list to be assigned next
 	hospitals[failedp->getNearestHospital()-1].movetotop(failedp);
 }
-bool Organizer::AddFinishedPatient(Patient* p)
+
+void Organizer::AddFinishedPatient(Patient* p)
 {
-	if (!p) {
-		return false;
+	if (p != nullptr && p->getPatientType() != CANCELLATION) 
+	{
+		finishedPatients->enqueue(p);
+		fpatients++;
 	}
-
-	int totalTime = timestep - p->getRequestTime();
-	//p->setServiceTime(totalTime);
-	// add to finish patients queue    
-	finishedPatients->enqueue(p);
-
-	return true;
 }
+
 Organizer::~Organizer()
 {
 	delete[] hospitals;
