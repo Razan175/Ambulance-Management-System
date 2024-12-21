@@ -42,7 +42,7 @@ class Organizer
 	
 
 	UI* ui;
-	ofstream outputfile;
+
 
 
 public:
@@ -51,13 +51,13 @@ public:
 	bool ReadFile(string filename = "InputFiles/Input.txt");
 	bool WriteFile(string filename, int timestamp);
 	void randSimulation(string filename = "InputFiles/Input.txt");
-	void mainSimulation(string filename = "InputFiles/Input.txt");
+	void mainSimulation();
 	void printFinishedPatientsList();
 	int getTimeStep();
 	void cancelled();
 	void CarFailure();
 	void FailureAction(Cars* fc, int pri);
-	Hospital* FindEP_Random_Hospital(int currentHospitalID);
+	
 	void AddFinishedPatient(Patient* p);
 
 	// Print functions
@@ -67,6 +67,7 @@ public:
 
 	// Finding closest hospital for EP when no avalible cars
 	//Hospital* findSuitableHospital(int currentHospitalID);
+	Hospital* FindEP_Random_Hospital(int currentHospitalID);
 
 	~Organizer();
 };
