@@ -226,7 +226,7 @@ void Organizer::mainSimulation(string filename)
 			{
 				c->setCarStatus(READY);
 				AddFinishedPatient(p);
-				fpatients++;
+				//fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 			else if (c->getCarStatus() == FAILED) {
@@ -236,7 +236,7 @@ void Organizer::mainSimulation(string filename)
 			else
 			{
 				c->setCarStatus(READY);
-				fpatients++;
+				//fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 		}
