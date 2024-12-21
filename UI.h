@@ -13,13 +13,13 @@ class UI
 
 	int mode;
 	Organizer* organizer;
-
+	string inputfile;
 public:
 
 	UI(Organizer* org);
 
 	//main functions in UI
-
+	string getFileName();
 	void startSimulation();
 	void selectMode();
 	void endSimulation();

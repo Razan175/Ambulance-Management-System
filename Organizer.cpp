@@ -6,8 +6,9 @@ bool Organizer::WriteFile(string filename, int timestamp)
 {
 
 	ofstream outputFile;
-	outputFile.open("output6.txt", ios::out);
-
+	string noDotTxt = ui->getFileName().substr(0, ui->getFileName().size() - 4);
+	string fileoutput = noDotTxt + "_output.txt";
+	outputFile.open(fileoutput, ios::out);
 	Patient* patient = nullptr;
 
 	int totalbusytime = 0;
@@ -80,9 +81,13 @@ bool Organizer::ReadFile(string filename)
 	ncarCount = 0;
 
 	ifstream file;
-	file.open(filename);
+	file.open("InputFiles/" + filename + ".txt");
 
 	if (file.fail())
+
+
+
+
 	{
 		cout << "Cannot open file" << endl;
 		return false;
@@ -182,10 +187,11 @@ bool Organizer::ReadFile(string filename)
 
 void Organizer::mainSimulation(string filename)
 {
-	if (!ReadFile(filename))
+	ui->startSimulation();
+	if (!ReadFile(ui->getFileName()))
 		return;
 
-	ui->startSimulation();
+	
 	ui->selectMode();
 
 	Patient* p = nullptr;
@@ -252,7 +258,7 @@ void Organizer::mainSimulation(string filename)
 			}
 		}
 
-		//CarFailure(); //called after cars are out 
+		CarFailure(); //called after cars are out 
 		//cancelled(); //called after cars are out
 
 		//move from out to back
@@ -276,7 +282,7 @@ void Organizer::mainSimulation(string filename)
 			{
 				c->setCarStatus(READY);
 				AddFinishedPatient(p);
-				//fpatients++;
+				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 			else if (c->getCarStatus() == FAILED) {
@@ -286,7 +292,7 @@ void Organizer::mainSimulation(string filename)
 			else
 			{
 				c->setCarStatus(READY);
-				//fpatients++;
+				fpatients++;
 				hospitals[c->getHID() - 1].AddCar(c);
 			}
 		}
@@ -760,7 +766,7 @@ void Organizer::AddFinishedPatient(Patient* p)
 	if (p != nullptr && p->getPatientType() != CANCELLATION) 
 	{
 		finishedPatients->enqueue(p);
-		fpatients++;
+		//fpatients++;
 	}
 }
 

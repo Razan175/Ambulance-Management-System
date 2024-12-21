@@ -1,2 +1,5 @@
-﻿  Cars.cpp
+﻿  Organizer.cpp
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(335,77): warning C4806: '==': unsafe operation: no value of type 'bool' promoted to type 'CarStatus' can equal the given constant
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(397,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Data_Structure\Project\Ambulance-Management-System\Organizer.cpp(661,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   phase1.2.vcxproj -> C:\Data_Structure\Project\Ambulance-Management-System\x64\Debug\phase1.2.exe

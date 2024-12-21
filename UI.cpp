@@ -5,15 +5,9 @@ UI::UI(Organizer* org)
 {
 	mode = 0;
 	organizer = org;
+	inputfile = "";
 }
 
-void UI::startSimulation()
-{
-
-	// Greatings
-	cout << "======== Starting Simulation =========" << endl;
-
-}
 
 void UI::selectMode()
 {
@@ -47,6 +41,19 @@ void UI::selectMode()
 		break;
 	}
 
+}
+void UI::startSimulation()
+{
+
+	cout << "======== Starting Simulation =========" << endl;
+	cout << "Please Enter File Name: ";
+	cin >> inputfile;
+
+}
+
+string UI::getFileName()
+{
+	return inputfile;
 }
 
 void UI::simulateMode()
