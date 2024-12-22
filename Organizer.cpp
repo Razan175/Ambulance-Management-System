@@ -220,7 +220,7 @@ void Organizer::mainSimulation()
 				else if (p != nullptr)
 				{
 					p = c->getPatientAssigned();
-					p->setPickupTime((timestep + (p->getDistance() / c->getSpeed())));
+					p->setPickupTime((timestep + ceil((float)p->getDistance() / c->getSpeed())));
 
 					//we want the highest priority to the smallest pickup time
 					//the given pri-queues give the highest priority to the biggest integer number
@@ -235,7 +235,7 @@ void Organizer::mainSimulation()
 			while (hospitals[i].sendSPCar(c))
 			{
 				p = c->getPatientAssigned();
-				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed()));
+				p->setPickupTime(timestep + ceil((float)p->getDistance() / c->getSpeed()));
 				outCars->enqueue(c, -1 * p->getPickupTime());	
 			}
 
@@ -243,7 +243,7 @@ void Organizer::mainSimulation()
 			while (hospitals[i].sendNPCar(c))
 			{
 				p = c->getPatientAssigned();
-				p->setPickupTime(timestep + (p->getDistance() / c->getSpeed())); 
+				p->setPickupTime(timestep + ceil((float)p->getDistance() / c->getSpeed()));
 				outCars->enqueue(c, -1 * p->getPickupTime());
 			}
 		}
@@ -256,7 +256,7 @@ void Organizer::mainSimulation()
 			outCars->dequeue(c, pri);
 			p = c->getPatientAssigned();
 
-			pri += (-1 * (p->getDistance() / c->getSpeed()));
+			pri += (-1 * ceil((float)p->getDistance() / c->getSpeed()));
 			c->setCarStatus(LOADED);
 
 			backCars->enqueue(c, pri);
@@ -296,9 +296,9 @@ void Organizer::mainSimulation()
 			// c->setchecktimestep(0); not sure ab this bs isa sah 
 			hospitals[c->getHID() - 1].AddCar(c);
 		}
-
-		timestep++;
 		ui->simulateMode();
+		timestep++;
+		
 	}
 	WriteFile("output.txt", timestep);
 	ui->endSimulation();
